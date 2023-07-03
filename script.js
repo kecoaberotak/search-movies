@@ -1,51 +1,29 @@
-// JS Vanilla - Fetch
-// fetch('http://www.omdbapi.com/?apikey=3e7ec99d&s=batman')
-//   .then(response => response.json())
-//     .then(response => console.log(response.Search))
+const moviesContainer = document.querySelector('.movies-container');
 
+$.ajax({
+  url: 'http://www.omdbapi.com/?apikey=3e7ec99d&s=batman',
+  success: result => {
+    const movies = result.Search;
+    let cards = '';
+    movies.forEach(movie => {
+      cards += 
+              `<div class="col-md-4 my-3">
+                <div class="card">
+                  <img src="${movie.Poster}" class="card-img-top" alt="Movie Poster">
+                  <div class="card-body">
+                    <h5 class="card-title">${movie.Title}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">${movie.Year}</h6>
+                    <a href="#" class="btn btn-primary">Show Details</a>
+                  </div>
+                </div>
+              </div>`
+      // Pakai vanilla JS
+      // moviesContainer.innerHTML = cards;
 
-// Promise
-// Contoh 1
-const ditepati = true;
+      // Pake Jquery
+      $('.movies-container').html(cards);
+    });
+  },
 
-const janji1 = new Promise((resolve, reject) => {
-  if(ditepati){
-    resolve('Janji ditepati!');
-  }else {
-    reject('Ingkar Janji!');
-  }
+  error: e => console.log(e.responseText)
 });
-
-function Contoh1(){
-  const test = janji1.then(response => console.log(`OK! : ${response}`)).catch(response => console.log(response))
-  return test;
-}
-
-
-
-// Contoh2
-let ditepati2 = false;
-
-const janji2 = new Promise((resolve, reject) => {
-  if(ditepati2){
-    setTimeout(() => {
-      resolve('Janji ditepati setelah beberapa saat');
-    }, 2000);
-  }else {
-    setTimeout(() => {
-      reject('Janji Tidak ditepati');
-    }, 2000);
-  }
-});
-
-function Contoh2(){
-  const test = janji2
-  .finally(() => console.log('Selesai menunggu'))
-  .then(response => console.log(`OK! : ${response}`))
-  .catch(response => console.log(`NOOO! ${response}`))
-  return test;
-}
-
-console.log('Mulai');
-Contoh2();
-console.log('Selesai');
