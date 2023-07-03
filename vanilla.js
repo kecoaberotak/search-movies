@@ -1,6 +1,7 @@
 const searchButton = document.querySelector('.search-button');
 const inputKeyword = document.querySelector('.input-keyword');
 const moviesContainer = document.querySelector('.movies-container');
+const modalButton = document.querySelector('.modal-detail-button');
 
 searchButton.addEventListener('click', function(){
   fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${inputKeyword.value}`)
@@ -9,7 +10,6 @@ searchButton.addEventListener('click', function(){
       let cards = '';
       
       movies.forEach(movie => cards += showCard(movie));
-
       moviesContainer.innerHTML = cards;
 
     }));
