@@ -1,18 +1,34 @@
 const searchButton = document.querySelector('.search-button');
 const inputKeyword = document.querySelector('.input-keyword');
 const moviesContainer = document.querySelector('.movies-container');
-const modalButton = document.querySelector('.modal-detail-button');
 
 searchButton.addEventListener('click', function(){
   fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${inputKeyword.value}`)
-    .then(response => response.json().then(result => {
+    .then(response => response.json())
+    .then(result => {
       const movies = result.Search;
       let cards = '';
       
       movies.forEach(movie => cards += showCard(movie));
       moviesContainer.innerHTML = cards;
 
-    }));
+      // modal
+      const modalButton = document.querySelectorAll('.modal-detail-button');
+
+      modalButton.forEach(btn => btn.addEventListener('click', function(){
+        const imdbID = this.dataset.imdbid;
+
+        fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&i=${imdbID}`)
+          .then(response => response.json())
+          .then(result => {
+            const movieModal = showModal(result);
+            const modalBody = document.querySelector('.modal-body');
+            
+            modalBody.innerHTML = movieModal;
+          });
+      }));
+
+    });
 });
 
 
