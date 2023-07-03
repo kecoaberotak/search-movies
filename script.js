@@ -28,19 +28,23 @@ $.ajax({
           url: `http://www.omdbapi.com/?apikey=3e7ec99d&i=${$(this).data('imdbid')}`,
           success: (result) => {
             let modalMovie = 
-                           `<div class="col-md-3">
-                              <img src="${result.Poster}" alt="Movie Poster" class="img-fluid">
-                            </div>
-                            <div class="col-md">
-                              <ul class="list-group">
-                                <li class="list-group-item"><h4>${result.Title} (${result.Year})</h4></li>
-                                <li class="list-group-item"><strong>Director : </strong>${result.Director}</li>
-                                <li class="list-group-item"><strong>Actors : </strong>${result.Actors}</li>
-                                <li class="list-group-item"><strong>Writer : </strong>${result.Writer}</li>
-                                <li class="list-group-item"><strong>Genre : </strong>${result.Genre}</li>
-                                <li class="list-group-item"><strong>Plot : </strong><br>${result.Plot}</li>
-                              </ul>
-                            </div>`;
+             `<div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-3">
+                    <img src="${result.Poster}" alt="Movie Poster" class="img-fluid">
+                  </div>
+                  <div class="col-md">
+                    <ul class="list-group">
+                      <li class="list-group-item"><h4>${result.Title} (${result.Year})</h4></li>
+                      <li class="list-group-item"><strong>Director : </strong>${result.Director}</li>
+                      <li class="list-group-item"><strong>Actors : </strong>${result.Actors}</li>
+                      <li class="list-group-item"><strong>Writer : </strong>${result.Writer}</li>
+                      <li class="list-group-item"><strong>Genre : </strong>${result.Genre}</li>
+                      <li class="list-group-item"><strong>Plot : </strong><br>${result.Plot}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>`;
             
             $('.modal-movie').html(modalMovie);
           },
