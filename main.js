@@ -10,7 +10,7 @@ searchButton.addEventListener('click', async function(){
     // Nampilin list film seusai keyword
     updateUI(movies);
   }catch(err){
-    console.log(err);
+    alert(err);
   }
 });
 
