@@ -1,15 +1,53 @@
 // Seach bar
 const searchButton = document.querySelector('.search-button');
 searchButton.addEventListener('click', async function(){
-  const inputKeyword = document.querySelector('.input-keyword');
+  try{
+    const inputKeyword = document.querySelector('.input-keyword');
   
-  // Nangkep judul film berdasarkan keyword
-  const movies = await getMovies(inputKeyword.value);
-  
-  // Nampilin list film seusai keyword
-  updateUI(movies);
+    // Nangkep judul film berdasarkan keyword
+    const movies = await getMovies(inputKeyword.value);
+    
+    // Nampilin list film seusai keyword
+    updateUI(movies);
+  }catch(err){
+    console.log(err);
+  }
 });
 
+
+function getMovies(keyword){
+  return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
+  .then(response => {
+    if(response.ok === 'False'){
+      throw new Error(response.statusText)
+    }
+    return response.json()
+  })
+  .then(movies => {
+    if(movies.Response === 'False'){
+        throw new Error(movies.Error);
+    }
+    return movies.Search;
+  });
+};
+
+
+function updateUI(movies){
+  const moviesContainer = document.querySelector('.movies-container');
+  let cards = '';
+
+  movies.forEach(movie => {
+    cards += showCard(movie);
+  });
+
+  moviesContainer.innerHTML = cards;
+};
+
+
+
+
+
+// ====== MODAL ======
 
 // Event binding buat nampilin modal
 document.addEventListener('click', async function(e){
@@ -25,30 +63,10 @@ document.addEventListener('click', async function(e){
 });
 
 
-
-
-// Fungsi
-function getMovies(keyword){
-  return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
-  .then(response => response.json())
-  .then(movies => movies.Search);
-};
-
 function getMovieInfo(imdbID){
   return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&i=${imdbID}`)
   .then(response => response.json())
   .then(result => result);
-};
-
-function updateUI(movies){
-  const moviesContainer = document.querySelector('.movies-container');
-  let cards = '';
-
-  movies.forEach(movie => {
-    cards += showCard(movie);
-  });
-
-  moviesContainer.innerHTML = cards;
 };
 
 function updateModalUI(movie){
@@ -57,6 +75,11 @@ function updateModalUI(movie){
   modalBody.innerHTML = modalContent;
 }
 
+
+
+
+
+// ====== CARD ======
 function showCard(movie){
   return `<div class="col-md-4 my-3">
   <div class="card">
