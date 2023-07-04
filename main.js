@@ -15,20 +15,20 @@ searchButton.addEventListener('click', async function(){
 });
 
 
-function getMovies(keyword){
-  return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
-  .then(response => {
-    if(response.ok === 'False'){
-      throw new Error(response.statusText)
+async function getMovies(keyword){
+  try{
+    const response = await fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`);
+    console.log(response);
+    if(!response.ok){
+      throw new Error(response.statusText);
     }
-    return response.json()
-  })
-  .then(movies => {
-    if(movies.Response === 'False'){
-        throw new Error(movies.Error);
-    }
-    return movies.Search;
-  });
+    const body = await response.json();
+    return body.Search;
+
+  } catch(err){
+    console.log(err);
+  }
+
 };
 
 
