@@ -1,6 +1,5 @@
 // Seach bar
 const searchButton = document.querySelector('.search-button');
-
 searchButton.addEventListener('click', async function(){
   const inputKeyword = document.querySelector('.input-keyword');
   
@@ -9,16 +8,36 @@ searchButton.addEventListener('click', async function(){
   
   // Nampilin list film seusai keyword
   updateUI(movies);
+});
 
+
+// Event binding buat nampilin modal
+document.addEventListener('click', async function(e){
+  if(e.target.classList.contains('modal-detail-button')){
+    const imdbID = e.target.dataset.imdbid;
+
+    // fetch data
+    const movieDetail = await getMovieInfo(imdbID);
+
+    // update ui 
+    updateModalUI(movieDetail);
+  }
 });
 
 
 
 
+// Fungsi
 function getMovies(keyword){
   return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
   .then(response => response.json())
   .then(movies => movies.Search);
+};
+
+function getMovieInfo(imdbID){
+  return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&i=${imdbID}`)
+  .then(response => response.json())
+  .then(result => result);
 };
 
 function updateUI(movies){
@@ -31,6 +50,12 @@ function updateUI(movies){
 
   moviesContainer.innerHTML = cards;
 };
+
+function updateModalUI(movie){
+  const modalContent = showModal(movie);
+  const modalBody = document.querySelector('.modal-body');
+  modalBody.innerHTML = modalContent;
+}
 
 function showCard(movie){
   return `<div class="col-md-4 my-3">
