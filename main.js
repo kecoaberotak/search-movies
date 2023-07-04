@@ -1,7 +1,22 @@
+// Seach bar
 const searchButton = document.querySelector('.search-button');
 
+searchButton.addEventListener('click', async function(){
+  const inputKeyword = document.querySelector('.input-keyword');
+  
+  const movies = await getMovies(inputKeyword.value);
+  console.log(movies)
+
+});
 
 
+
+
+function getMovies(keyword){
+  return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
+  .then(response => response.json())
+  .then(movies => movies.Search);
+}
 
 
 function showCard(movie){
