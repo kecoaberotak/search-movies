@@ -4,8 +4,11 @@ const searchButton = document.querySelector('.search-button');
 searchButton.addEventListener('click', async function(){
   const inputKeyword = document.querySelector('.input-keyword');
   
+  // Nangkep judul film berdasarkan keyword
   const movies = await getMovies(inputKeyword.value);
-  console.log(movies)
+  
+  // Nampilin list film seusai keyword
+  updateUI(movies);
 
 });
 
@@ -16,8 +19,18 @@ function getMovies(keyword){
   return fetch(`http://www.omdbapi.com/?apikey=3e7ec99d&s=${keyword}`)
   .then(response => response.json())
   .then(movies => movies.Search);
-}
+};
 
+function updateUI(movies){
+  const moviesContainer = document.querySelector('.movies-container');
+  let cards = '';
+
+  movies.forEach(movie => {
+    cards += showCard(movie);
+  });
+
+  moviesContainer.innerHTML = cards;
+};
 
 function showCard(movie){
   return `<div class="col-md-4 my-3">
@@ -30,7 +43,7 @@ function showCard(movie){
     </div>
   </div>
 </div>`
-}
+};
 
 function showModal(movie){
   return `<div class="container-fluid">
@@ -50,4 +63,4 @@ function showModal(movie){
     </div>
   </div>
 </div>`
-}
+};
